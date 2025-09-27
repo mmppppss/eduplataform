@@ -22,7 +22,9 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
+    protected $casts = [
+        'two_factor_expires_at' => 'datetime',
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *
