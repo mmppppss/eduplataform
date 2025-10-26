@@ -8,7 +8,7 @@ export default function VerifyCode() {
     return (
         <AuthLayout
             title="Verificación 2FA"
-            description="Revisa tu correo y escribe el código de 6 dígitos que recibiste"
+            description="Revisa tu correo y escribe el código de 4 dígitos que recibiste"
         >
             <Head title="Verificar código" />
 

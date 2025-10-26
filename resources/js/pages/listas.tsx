@@ -5,15 +5,16 @@ import { Head } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Reportes',
-        href: '/reportes',
+        title: 'Lista',
+        href: '/listas',
     },
 ];
 
 export default function Reportes() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Reportes" />
+            <Head title="Listas" />
+            aqui iran las listas jjsdjsad
         </AppLayout>
     );
 }
