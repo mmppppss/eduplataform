@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Inertia\Inertia;
+
+
 class TwoFactorController extends Controller
 {
     public function showForm()
@@ -43,6 +45,7 @@ class TwoFactorController extends Controller
         // ahora sí iniciar sesión real
         Auth::login($user);
         $request->session()->regenerate();
+
 
         return redirect()->intended(route('dashboard'));
     }

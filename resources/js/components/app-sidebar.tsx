@@ -4,24 +4,28 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, List } from 'lucide-react';
+import { Folder, LayoutGrid, List } from 'lucide-react';
 import AppLogo from './app-logo';
+import {usePage} from '@inertiajs/react';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
+        role: ['administrador','estudiante', 'profesor', 'contable', 'tutor'],
     },
     {
         title: 'Reportes',
         href: '/reportes',
         icon: Folder,
+        role: ['administrador','estudiante', 'profesor', 'contable', 'tutor'],
     },
     {
         title: 'Listas',
         href: '/listas',
         icon: List,
+        role: ['profesor'],
     },
 ];
 
@@ -39,6 +43,8 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const profile = usePage<{ profile: { user: any; role: string }}>().props.profile;
+    const navitems = mainNavItems.filter(item => item.role?.includes(profile.role));
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -54,7 +60,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={navitems} />
             </SidebarContent>
 
             <SidebarFooter>
