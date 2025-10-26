@@ -26,7 +26,7 @@ export default function Welcome() {
                                     href={route('login')}
                                     className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
                                 >
-                                    Log in
+                                    Iniciar Sesión
                                 </Link>
                                 <Link
                                     href={route('register')}
@@ -39,7 +39,10 @@ export default function Welcome() {
                     </nav>
                 </header>
                 <div className="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
-                {setup.name}
+                    <span>
+                    {setup.name}   Aqui ira el dashboard
+
+                    </span>
                 </div>
                 <div className="hidden h-14.5 lg:block"></div>
             </div>
