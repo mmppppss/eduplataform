@@ -1,0 +1,16 @@
+created:
+    - app/Http/Controllers/PersonController.php
+    - app/Http/Controllers/UserController.php
+    - database/factories/PersonFactory.php
+    - database/factories/UserFactory.php
+    - database/migrations/2025_10_26_191016_create_people_table.php
+    - database/migrations/2025_10_26_191017_create_users_table.php
+    - app/Models/Person.php
+    - app/Models/User.php
+    - tests/Feature/Http/Controllers/PersonControllerTest.php
+    - tests/Feature/Http/Controllers/UserControllerTest.php
+updated:
+    - routes/web.php
+models:
+    Person: { nombres: 'string:255', apellidos: 'string:255', ci: 'string:9:unique', correo: 'string:255', telefono: integer, direccion: 'string:255', fecha_nacimiento: date, rol: 'enum:estudiante,profesor,administrador,contable,tutor' }
+    User: { person_id: 'id:fk', nombre_de_usuario: 'string:255:unique', contraseña: 'string:255', timestamps: timestamps }
