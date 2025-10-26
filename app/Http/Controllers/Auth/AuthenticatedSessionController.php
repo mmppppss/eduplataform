@@ -51,7 +51,7 @@ class AuthenticatedSessionController extends Controller
         ];
 
         Mail::to($user->email)
-            ->send(new HtmlMail('Codigo de un solo uso para autenticacion', $data));
+            ->queue(new HtmlMail('Codigo de un solo uso para autenticacion', $data));
 
         $request->session()->regenerate();
 
