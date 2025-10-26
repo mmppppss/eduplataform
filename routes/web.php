@@ -13,6 +13,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/reportes', function () {
+        return Inertia::render('reportes');
+    })->name('reportes');
+
+    Route::get('/listas', function () {
+        return Inertia::render('listas');
+    })->name('listas');
 });
 
 
