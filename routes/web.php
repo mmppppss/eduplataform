@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\TwoFactorController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
@@ -25,10 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reportes', function () {
         return Inertia::render('reportes');
     })->name('reportes');
-
-    Route::get('/listas', function () {
-        return Inertia::render('listas');
-    })->name('listas');
+    Route::get('/listas', [UserController::class, 'index'])->name('users.index');
 });
 
 
