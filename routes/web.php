@@ -26,6 +26,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reportes', function () {
         return Inertia::render('reportes');
     })->name('reportes');
+
+
     Route::get('/listas', [UserController::class, 'index'])->name('users.index');
 });
 

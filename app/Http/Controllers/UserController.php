@@ -15,4 +15,12 @@ class UserController extends Controller
             'users' => $users
         ]);
     }
+
+    function reports()
+    {
+        $users = User::all();
+        return  Inertia::render('reportes', [
+            'users' => $users
+        ]);
+    }
 }
