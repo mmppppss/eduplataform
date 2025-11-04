@@ -20,7 +20,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Personas() {
-    const { users } = usePage().props as { users: Array<{ id: number; name: string; email: string; created_at: string }> };
+    const { persons } = usePage<any>().props
     const [open, setOpen] = useState(false);
     const handleAddPerson = () => {
         setOpen(open ? false : true)
@@ -34,14 +34,14 @@ export default function Personas() {
     ]
     const campos = [
         { name: "name", label: "Nombres", type: "text", required: true, placeholder: "John" },
-        { name: "lastname", label: "Apellidos", type: "text", required: true, placeholder: "Doe" },
+        { name: "last_name", label: "Apellidos", type: "text", required: true, placeholder: "Doe" },
         { name: "ci", label: "Cedula de Identidad", type: "number", required: true, placeholder: "9876543" },
-        { name: "mail", label: "Correo Electrónico", type: "email", required: true, placeholder: "john@example.com" },
-        { name: "tel", label: "Teléfono", type: "tel", required: true, placeholder: "76543210" },
-        { name: "dir", label: "Dirección", type: "text", placeholder: "Calle falsa 123" },
-        { name: "date", label: "Fecha de Nacimiento", type: "date" },
+        { name: "email", label: "Correo Electrónico", type: "email", required: true, placeholder: "john@example.com" },
+        { name: "phone", label: "Teléfono", type: "tel", required: true, placeholder: "76543210" },
+        { name: "address", label: "Dirección", type: "text", placeholder: "Calle falsa 123" },
+        { name: "birth_date", label: "Fecha de Nacimiento", type: "date" },
         {
-            name: "rol",
+            name: "role",
             label: "Rol",
             type: "select",
             options: roles,
@@ -67,8 +67,13 @@ export default function Personas() {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user) => (
-                            <></>
+                        {persons.map((p) => (
+                            <tr key={p.id} className="border-t hover:bg-gray-50">
+                                <td className="py-2 px-4">{p.id}</td>
+                                <td className="py-2 px-4">{p.name}</td>
+                                <td className="py-2 px-4">{p.user?.email}</td>
+                                <td className="py-2 px-4">{new Date(p.created_at).toLocaleDateString()}</td>
+                            </tr>
                         ))}
                     </tbody>
                 </table>

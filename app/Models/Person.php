@@ -16,13 +16,13 @@ class Person extends Model
      * @var array
      */
     protected $fillable = [
-        'nombres',
-        'apellidos',
+        'name',
+        'last_name',
         'ci',
-        'telefono',
-        'direccion',
-        'fecha_nacimiento',
-        'rol',
+        'phone',
+        'address',
+        'birth_date',
+        'role',
     ];
     protected $table = 'persons';
     /**
@@ -34,7 +34,7 @@ class Person extends Model
     {
         return [
             'id' => 'integer',
-            'fecha_nacimiento' => 'date',
+            'birth_date' => 'date',
         ];
     }
     public function user()

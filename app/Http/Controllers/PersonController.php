@@ -12,42 +12,39 @@ class PersonController extends Controller
 {
     function index()
     {
-        $users = User::all();
+        $persons = Person::with('user')->get();
         return  Inertia::render('personas', [
-            'users' => $users
+            'persons' => $persons
         ]);
     }
-    function store(Request $request)
+
+    public function store(Request $request)
     {
+        // 1️⃣ Validar datos
         $validatedPerson = $request->validate([
-            'name'      => 'required|string|max:255',
-            'lastname'  => 'required|string|max:255',
-            'ci'        => 'required|numeric|unique:persons,ci',
-            'tel'       => 'required|string|max:20',
-            'dir'       => 'nullable|string|max:255',
-            'date'      => 'nullable|date',
-            'rol'       => 'required|string|max:50',
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'ci' => 'required|numeric|unique:persons,ci',
+            'phone' => 'required|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'birth_date' => 'nullable|date',
+            'role' => 'required|string|max:50',
         ]);
 
         $validatedUser = $request->validate([
-            'mail' => 'required|email|unique:users,email',
-        ]);
-        $person = Person::create([
-            'nombres' => $request->name,
-            'apellidos' => $request->lastname,
-            'ci' => $request->ci,
-            'telefono' => $request->tel,
-            'direccion' => $request->dir,
-            'fecha_nacimiento' => $request->date,
-            'rol' => $request->rol,
+            'email' => 'required|email|unique:users,email',
         ]);
 
+        $person = Person::create($validatedPerson);
+
         $user = User::create([
-            'name' => $request->name . ' ' . $request->lastname,
-            'email' => $request->mail,
-            'password' => Hash::make($request->ci),
+            'name' => $request->name . ' ' . $request->last_name,
+            'email' => $validatedUser['email'],
+            'password' => Hash::make($request->ci), // contraseña temporal
             'person_id' => $person->id,
         ]);
-        return redirect()->back()->with('success', 'Persona agregada correctamente.');
+
+        return redirect()->route('persons.index')
+            ->with('success', 'Persona y usuario creados correctamente');
     }
 }

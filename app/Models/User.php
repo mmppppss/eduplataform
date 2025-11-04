@@ -56,10 +56,10 @@ class User extends Authenticatable
 
     public function role(): ?string
     {
-        return $this->person?->rol;
+        return $this->person?->role;
     }
     public function isRole(string $role): bool
     {
-        return $this->person?->rol === $role;
+        return $this->person?->role === $role;
     }
 }
