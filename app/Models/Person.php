@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Person extends Model
 {
@@ -18,7 +19,6 @@ class Person extends Model
         'nombres',
         'apellidos',
         'ci',
-        'correo',
         'telefono',
         'direccion',
         'fecha_nacimiento',
@@ -36,5 +36,9 @@ class Person extends Model
             'id' => 'integer',
             'fecha_nacimiento' => 'date',
         ];
+    }
+    public function user()
+    {
+        return $this->hasOne(User::class);
     }
 }

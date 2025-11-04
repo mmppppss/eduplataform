@@ -1,15 +1,16 @@
-import { Dialog } from '@/components/ui/dialog';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
-
-import { Form, Head } from '@inertiajs/react';
-import { Input } from '@/components/ui/input';
+import { Head } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
-import InputError from '@/components/input-error';
-import AuthLayout from '@/layouts/auth-layout';
-import { Select } from '@/components/ui/select';
+import DynamicForm from '@/components/DynamicForm';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,113 +21,37 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Personas() {
     const { users } = usePage().props as { users: Array<{ id: number; name: string; email: string; created_at: string }> };
-    const [openDialog, setOpenDialog] = useState(false);
+    const [open, setOpen] = useState(false);
     const handleAddPerson = () => {
-        setOpenDialog(openDialog ? false : true)
+        setOpen(open ? false : true)
     }
     const roles = [
         { value: 'Administrador', label: 'Administrador' },
-        { value: 'Profesor', label: 'Profesor' }
+        { value: 'Profesor', label: 'Profesor' },
+        { value: 'Estudiante', label: 'Estudiante' },
+        { value: 'Contable', label: 'Contable' },
+
     ]
-    const form = (<Form method="post" action={route('verify.code')} className="flex flex-col gap-6">
-        {({ processing, errors }) => (
-            <>
-                <div className="grid gap-2">
-                    <label htmlFor="name">Nombres</label>
-                    <Input
-                        id="name"
-                        type="text"
-                        name="name"
-                        required
-                        autoFocus
-                        placeholder="John"
-                    />
-                    <InputError message={errors.code} />
-                    <label htmlFor="lastname">Apellidos</label>
-                    <Input
-                        id="lastname"
-                        type="text"
-                        name="lastname"
-                        required
-                        placeholder="Doe"
-                    />
-                    <InputError message={errors.code} />
-                    <label htmlFor="ci">Cedula de Identidad</label>
-                    <Input
-                        id="ci"
-                        type="number"
-                        name="ci"
-                        required
-                        placeholder="9876543"
-                    />
-                    <InputError message={errors.code} />
-                    <label htmlFor="mail">Correo Electronico</label>
-                    <Input
-                        id="mail"
-                        type="email"
-                        name="mail"
-                        required
-                        placeholder="johnDoe@email.com"
-                    />
-                    <InputError message={errors.code} />
-                    <label htmlFor="tel">Telefono</label>
-                    <Input
-                        id="tel"
-                        type="tel"
-                        name="tel"
-                        required
-                        placeholder="76543210"
-                    />
-                    <InputError message={errors.code} />
-                    <label htmlFor="dir">Direccion</label>
-                    <Input
-                        id="dir"
-                        type="text"
-                        name="dir"
-                        placeholder="Calle falsa 123"
-                    />
-                    <InputError message={errors.code} />
-                    <div className='w-full flex justify-start'>
-                        <div>
-                            <label htmlFor="date">Fecha de Nacimiento</label>
-                            <Input
-                                id="date"
-                                type="date"
-                                name="date"
-                            />
-                            <InputError message={errors.code} />
-                        </div>
-                        <div>
-                            <label htmlFor="rol">Rol</label>
-                            <select>
-                                {roles.map(r => {
-                                    return <option value={r.value}>{r.label}</option>
-                                })}
-                            </select>
-                            <InputError message={errors.code} />
-                        </div>
-                    </div>
-                </div>
-                <div className='mt-4'>
-                    <Button type="submit" className="w-auto mr-4" disabled={processing}>
-                        Agregar
-                    </Button>
-                    <Button onClick={handleAddPerson} className="w-auto" disabled={processing}>
-                        Cancelar
-                    </Button>
-                </div>
-            </>
-        )
+    const campos = [
+        { name: "name", label: "Nombres", type: "text", required: true, placeholder: "John" },
+        { name: "lastname", label: "Apellidos", type: "text", required: true, placeholder: "Doe" },
+        { name: "ci", label: "Cedula de Identidad", type: "number", required: true, placeholder: "9876543" },
+        { name: "mail", label: "Correo Electrónico", type: "email", required: true, placeholder: "john@example.com" },
+        { name: "tel", label: "Teléfono", type: "tel", required: true, placeholder: "76543210" },
+        { name: "dir", label: "Dirección", type: "text", placeholder: "Calle falsa 123" },
+        { name: "date", label: "Fecha de Nacimiento", type: "date" },
+        {
+            name: "rol",
+            label: "Rol",
+            type: "select",
+            options: roles,
         }
-    </Form >)
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestion Personas" />
             <div className="p-6">
-                {openDialog ? <Dialog>
-                    {form}
-                </Dialog> : null}
-
                 <div className="">
                     <h1 className="text-2xl font-bold mb-4">Lista de Personas</h1>
                     <Button onClick={handleAddPerson}>Agregar nueva Persona</Button>
@@ -147,6 +72,22 @@ export default function Personas() {
                         ))}
                     </tbody>
                 </table>
+                <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogContent
+                        className="
+                        max-w-2xl w-[90vw]
+                        max-h-[90vh] overflow-y-auto
+                        rounded-2xl p-6 sm:p-8
+                    "
+                    >
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-semibold">
+                                Nueva Persona
+                            </DialogTitle>
+                        </DialogHeader>
+                        <DynamicForm fields={campos} onCancel={handleAddPerson} postRoute="/personas/store" />
+                    </DialogContent>
+                </Dialog>
             </div>
         </AppLayout>
     );

@@ -30,6 +30,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/listas', [UserController::class, 'index'])->name('users.index');
     Route::get('/personas', [PersonController::class, 'index'])->name('persons.index');
+
+    Route::post('/personas/store', [PersonController::class, 'store'])
+        ->name('personas.store');
 });
 
 

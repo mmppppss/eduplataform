@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'person_id',
     ];
     protected $casts = [
         'two_factor_expires_at' => 'datetime',
