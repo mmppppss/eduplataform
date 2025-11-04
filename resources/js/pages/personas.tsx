@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Reportes() {
+export default function Personas() {
     const { users } = usePage().props as { users: Array<{ id: number; name: string; email: string; created_at: string }> };
     const [openDialog, setOpenDialog] = useState(false);
     const handleAddPerson = () => {
