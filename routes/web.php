@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/personas/store', [PersonController::class, 'store'])
         ->name('personas.store');
+    Route::post('/personas/update/{person}', [PersonController::class, 'update'])->name('personas.update');
+    Route::post('/personas/destroy/{person}', [PersonController::class, 'destroy'])->name('personas.destroy');
 });
 
 
