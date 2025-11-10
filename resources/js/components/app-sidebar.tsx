@@ -22,8 +22,8 @@ const mainNavItems: NavItem[] = [
         role: ['administrador','estudiante', 'profesor', 'contable', 'tutor'],
     },
     {
-        title: 'Listas',
-        href: '/listas',
+        title: 'Cursos',
+        href: '/cursos',
         icon: List,
         role: ['profesor'],
     },

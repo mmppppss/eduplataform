@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->belongsTo(Person::class);
     }
 
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'teacher_id');
+    }
+
     public function role(): ?string
     {
         return $this->person?->role;

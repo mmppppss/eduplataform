@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -29,12 +30,17 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/listas', [UserController::class, 'index'])->name('users.index');
+
+    //crud personas
     Route::get('/personas', [PersonController::class, 'index'])->name('persons.index');
 
     Route::post('/personas/store', [PersonController::class, 'store'])
         ->name('personas.store');
     Route::post('/personas/update/{person}', [PersonController::class, 'update'])->name('personas.update');
     Route::post('/personas/destroy/{person}', [PersonController::class, 'destroy'])->name('personas.destroy');
+
+    //crud courses
+    Route::get('/cursos', [CourseController::class, 'index'])->name('courses.index');
 });
 
 

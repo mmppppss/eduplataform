@@ -41,4 +41,15 @@ class Person extends Model
     {
         return $this->hasOne(User::class);
     }
+    public function courses()
+    {
+        return $this->hasManyThrough(
+            Course::class, // Modelo final
+            User::class,   // Modelo intermedio
+            'id',          // foreignKey en User (users.id)
+            'teacher_id',  // foreignKey en Course (courses.teacher_id)
+            'user_id',     // localKey en Person (persons.user_id)
+            'id'           // localKey en User (users.id)
+        );
+    }
 }
