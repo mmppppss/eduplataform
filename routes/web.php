@@ -40,7 +40,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/personas/destroy/{person}', [PersonController::class, 'destroy'])->name('personas.destroy');
 
     //crud courses
-    Route::get('/cursos', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('/cursos', [CourseController::class, 'index'])->name('cursos.index');
+
+    Route::post('/cursos/store', [CourseController::class, 'store'])
+        ->name('cursos.store');
+    Route::post('/cursos/update/{course}', [CourseController::class, 'update'])->name('cursos.update');
+    Route::post('/cursos/destroy/{course}', [CourseController::class, 'destroy'])->name('cursos.destroy');
 });
 
 

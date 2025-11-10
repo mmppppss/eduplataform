@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 
@@ -16,18 +18,16 @@ class CourseController extends Controller
     {
         $courses = Course::with('teacher.person')->get();
 
+        $teachers = User::with('person')
+            ->whereHas('person', function ($query) {
+                $query->where('role', 'profesor');
+            })
+            ->get();
         // Retornamos a la vista Inertia
         return Inertia::render('cursos', [
             'courses' => $courses,
+            'teachers' => $teachers
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -35,7 +35,13 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'course_name' => 'required|string|max:255',
+            'teacher_id' => 'required|exists:users,id',
+        ]);
+
+        $course = Course::create($validated);
+        return redirect()->route('cursos.index');
     }
 
     /**
@@ -59,7 +65,12 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $validated = $request->validate([
+            'course_name' => 'required|string|max:255',
+            'teacher_id' => 'required|exists:users,id',
+        ]);
+        $course->update($validated);
+        return redirect()->route('cursos.index');
     }
 
     /**
@@ -67,6 +78,10 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        $course->active = false;
+
+        $course->save();
+
+        return redirect()->route('cursos.index')->with('success', 'Curso desactivado correctamente.');
     }
 }

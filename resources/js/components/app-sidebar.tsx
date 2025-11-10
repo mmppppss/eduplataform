@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Folder, LayoutGrid, List, PersonStandingIcon } from 'lucide-react';
+import { Folder, LayoutGrid, List, PersonStandingIcon, BookOpen } from 'lucide-react';
 import AppLogo from './app-logo';
 import {usePage} from '@inertiajs/react';
 
@@ -24,7 +24,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Cursos',
         href: '/cursos',
-        icon: List,
+        icon: BookOpen,
         role: ['profesor'],
     },
     {
