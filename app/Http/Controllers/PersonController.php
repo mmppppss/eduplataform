@@ -37,7 +37,6 @@ class PersonController extends Controller
         $person = Person::create($validatedPerson);
 
         $user = User::create([
-            'name' => $request->name . ' ' . $request->last_name,
             'email' => $validatedUser['email'],
             'password' => Hash::make($request->ci), // contraseña temporal
             'person_id' => $person->id,
@@ -71,7 +70,6 @@ class PersonController extends Controller
 
         // Y sincronizamos los datos del usuario relacionado
         $person->user->update([
-            'name'  => $validated['name'] . ' ' . $validated['last_name'],
             'email' => $validated['email'],
         ]);
 

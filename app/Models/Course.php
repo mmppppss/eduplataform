@@ -22,4 +22,5 @@ class Course extends Model
     {
         return $this->teacher->person();
     }
+
 }

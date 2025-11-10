@@ -18,7 +18,6 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
         'person_id',
@@ -66,5 +65,10 @@ class User extends Authenticatable
     public function isRole(string $role): bool
     {
         return $this->person?->role === $role;
+    }
+
+    public function getNameAttribute(): string
+    {
+        return $this->person ? $this->person->first_name . ' ' . $this->person->last_name : '';
     }
 }

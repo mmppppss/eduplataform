@@ -5,7 +5,7 @@ import { iconB64 } from 'profile-icon';
 
 export function UserInfo({ user, showEmail = false }: { user: User; showEmail?: boolean }) {
     const getInitials = useInitials();
-    const svgicon = iconB64(user.name, 400, false, user.name.length + 27 % 32 );
+    const svgicon = iconB64(user.person.name+user.person.last_name, 400, false, user.person.name.length + 27 % 32 );
     const b64 = `data:image/svg+xml;base64,${svgicon}`
     return (
         <>
@@ -13,15 +13,15 @@ export function UserInfo({ user, showEmail = false }: { user: User; showEmail?: 
 
                 <AvatarImage
                     src={b64}
-                    alt={user.name}
+                    alt={user.person.name}
                 >
                 </AvatarImage>
                 <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                    {getInitials(user.name)}
+                    {getInitials(user.person.name+user.person.last_name)}
                 </AvatarFallback>
             </Avatar >
             <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">{user.person.name} {user.person.last_name}</span>
                 {showEmail && <span className="truncate text-xs text-muted-foreground">{user.email}</span>}
             </div>
         </>

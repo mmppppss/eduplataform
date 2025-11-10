@@ -40,22 +40,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Nombre</Label>
-
-                                    <Input
-                                        id="name"
-                                        className="mt-1 block w-full"
-                                        defaultValue={auth.user.name}
-                                        name="name"
-                                        required
-                                        autoComplete="name"
-                                        placeholder="Nombre"
-                                    />
-
-                                    <InputError className="mt-2" message={errors.name} />
-                                </div>
-
-                                <div className="grid gap-2">
                                     <Label htmlFor="email">Correo</Label>
 
                                     <Input
