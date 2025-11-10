@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import DynamicForm from '@/components/DynamicForm';
-import Search from '@/components/Search';
+import List from '@/components/List';
 
 import {
     Dialog,
@@ -66,9 +66,10 @@ function AddPerson({ campos, handleAddPerson, selectedPerson = null }) {
 }
 export default function Personas() {
     const { persons } = usePage<any>().props
-    const [filteredPersons, setFilteredPersons] = useState(persons);
     const [open, setOpen] = useState(false);
+    const [selectedRole, setSelectedRole] = useState('');
     const [selectedPerson, setSelectedPerson] = useState(null);
+    const [filteredPersons, setFilteredPersons] = useState(persons);
     const { post } = useForm();
     const handleAddPerson = () => {
         setOpen(open ? false : true)
@@ -83,12 +84,22 @@ export default function Personas() {
             post(`/personas/destroy/${id}`);
         }
     };
+    const handleRoleChange = (role: string) => {
+        setSelectedRole(role);
+        if (role === '') {
+            setFilteredPersons(persons);
+        } else {
+            const filtered = persons.filter((p:any) => p.role === role);
+            setFilteredPersons(filtered);
+        }
+
+    };
 
     useEffect(() => {
         if (!open) {
             setSelectedPerson(null)
         }
-    }, [open]);
+    }, [open, selectedPerson]);
 
     const roles = [
         { value: 'administrador', label: 'Administrador' },
@@ -117,49 +128,39 @@ export default function Personas() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestion Personas" />
             <div className="p-6">
-                <div className="">
-                    <h1 className="text-2xl font-bold mb-4">Lista de Personas</h1>
-                    <Button onClick={handleAddPerson}>Agregar nueva Persona</Button>
-                    <Search
-                        data={persons}
-                        fields={['name', 'email', 'phone']}
-                        onFiltered={setFilteredPersons}
-                    />
+                <div className="flex items-center justify-between mb-4">
+                    <h1 className="text-2xl font-bold mb-4">Gestion de Personas   </h1>
+
+
+                    <Button onClick={handleAddPerson}>Agregar Persona</Button>
                 </div>
 
-                <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-                    <thead>
-                        <tr className="bg-gray-100 text-left text-gray-600 uppercase text-sm">
-
-                            <th className="py-3 px-4">Rol</th>
-                            <th className="py-3 px-4">Nombre</th>
-                            <th className="py-3 px-4">Correo</th>
-                            <th className="py-3 px-4">Telefono</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredPersons.map((p: any) => (
-                            <tr key={p.id} className="border-t hover:bg-gray-50">
-                                <td className="py-2 px-4">{p.role.toUpperCase()}</td>
-                                <td className="py-2 px-4">{p.name} {p.last_name}</td>
-                                <td className="py-2 px-4"><a href={`mailto:${p.user?.email}`}> {p.user?.email}</a></td>
-                                <td className="py-2 px-4"><a href={`https://wa.me/591${p.phone}`}>{p.phone}</a> </td>
-                                <td>
-                                    <Button variant="outline" onClick={() => handleEdit(p)}>
-                                        Editar
-                                    </Button>
-                                </td>
-                                <td>
-                                    <Button onClick={() => handleDelete(p.id)}>
-                                        Eliminar
-                                    </Button>
-                                </td>
-                            </tr>
+                <div className="relative">
+                    <select
+                        className="border rounded px-3 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={selectedRole}
+                        onChange={(e) => handleRoleChange(e.target.value)}
+                    >
+                        <option value="">Personas</option>
+                        {roles.map((r) => (
+                            <option key={r.value} value={r.value}>
+                                {r.label}
+                            </option>
                         ))}
-                    </tbody>
-                </table>
+                    </select>
+                </div>
+
+                <List data={filteredPersons}
+                    fields={['name', 'last_name', 'user.email', 'phone']}
+                    columns={[
+                        { label: 'Rol', field: 'role', render: (v) => v?.toUpperCase() },
+                        { label: 'Nombre', field: 'name', render: (v, p) => `${p.name} ${p.last_name}` },
+                        { label: 'Correo', field: 'user.email', render: (v) => <a href={`mailto:${v}`}>{v}</a> },
+                        { label: 'Teléfono', field: 'phone', render: (v) => <a href={`https://wa.me/591${v}`}>{v}</a> },
+                    ]}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                />
                 <Dialog open={open} onOpenChange={setOpen}>
                     <AddPerson campos={campos} handleAddPerson={handleAddPerson} selectedPerson={selectedPerson} />
                 </Dialog>
