@@ -21,14 +21,13 @@ class PersonFactory extends Factory
     public function definition(): array
     {
         return [
-            'nombres' => fake()->regexify('[A-Za-z0-9]{255}'),
-            'apellidos' => fake()->regexify('[A-Za-z0-9]{255}'),
+            'name' => fake()->regexify('[A-Za-z0-9]{255}'),
+            'last_name' => fake()->regexify('[A-Za-z0-9]{255}'),
             'ci' => fake()->regexify('[A-Za-z0-9]{9}'),
-            'correo' => fake()->regexify('[A-Za-z0-9]{255}'),
-            'telefono' => fake()->numberBetween(-10000, 10000),
-            'direccion' => fake()->regexify('[A-Za-z0-9]{255}'),
-            'fecha_nacimiento' => fake()->date(),
-            'rol' => fake()->randomElement(["estudiante","profesor","administrador","contable","tutor"]),
+            'phone' => fake()->numberBetween(-10000, 10000),
+            'address' => fake()->regexify('[A-Za-z0-9]{255}'),
+            'birth_date' => fake()->date(),
+            'role' => fake()->randomElement(["estudiante","profesor","administrador","contable","tutor"]),
         ];
     }
 }
