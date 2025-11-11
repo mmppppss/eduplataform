@@ -25,13 +25,13 @@ const mainNavItems: NavItem[] = [
         title: 'Cursos',
         href: '/cursos',
         icon: BookOpen,
-        role: ['profesor'],
+        role: ['administrador'],
     },
     {
         title: 'Personas',
         href: '/personas',
         icon: PersonStandingIcon,
-        role: ['administrador','estudiante', 'profesor', 'contable', 'tutor'],
+        role: ['administrador'],
     },
 ];
 

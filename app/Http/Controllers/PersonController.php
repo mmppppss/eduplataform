@@ -18,13 +18,14 @@ class PersonController extends Controller
         ]);
     }
 
+
     public function store(Request $request)
     {
         $validatedPerson = $request->validate([
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'ci' => 'required|numeric|unique:persons,ci',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|max:20',
             'address' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
             'role' => 'required|string|max:50',
@@ -34,17 +35,19 @@ class PersonController extends Controller
             'email' => 'required|email|unique:users,email',
         ]);
 
+        // Crear la persona
         $person = Person::create($validatedPerson);
 
+        // Crear el usuario asociado
         $user = User::create([
             'email' => $validatedUser['email'],
-            'password' => Hash::make($request->ci), // contraseña temporal
+            'password' => Hash::make($validatedPerson['ci']), // contraseña temporal = CI
             'person_id' => $person->id,
         ]);
 
-
-        return redirect()->route('persons.index')->with('success', 'Persona actualizada correctamente.');
+        return redirect()->route('personas.index')->with('success', 'Persona creada exitosamente.');
     }
+
 
     public function update(Request $request, Person $person)
     {
@@ -57,6 +60,10 @@ class PersonController extends Controller
             'birth_date'  => 'nullable|date',
             'role'        => 'required|string|max:50',
         ]);
+        if(!$validated){
+            return redirect()->back()->with('error', 'Error al actualizar la persona.');
+        }
+
 
         // Actualizamos los campos internos del modelo Person
         $person->update([
@@ -73,7 +80,7 @@ class PersonController extends Controller
             'email' => $validated['email'],
         ]);
 
-        return redirect()->route('persons.index')->with('success', 'Persona actualizada correctamente.');
+        return redirect()->route('personas.index')->with('success', 'Persona actualizada exitosamente.');
     }
     public function destroy(Person $person)
     {
@@ -82,6 +89,6 @@ class PersonController extends Controller
         }
         $person->delete();
 
-        return redirect()->route('persons.index');
+        return redirect()->route('personas.index')->with('success', 'Persona eliminada exitosamente.');
     }
 }

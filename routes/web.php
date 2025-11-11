@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/listas', [UserController::class, 'index'])->name('users.index');
 
     //crud personas
-    Route::get('/personas', [PersonController::class, 'index'])->name('persons.index');
+    Route::get('/personas', [PersonController::class, 'index'])->name('personas.index');
 
     Route::post('/personas/store', [PersonController::class, 'store'])
         ->name('personas.store');

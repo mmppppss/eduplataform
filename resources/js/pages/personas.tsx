@@ -1,11 +1,12 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { usePage, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import DynamicForm from '@/components/DynamicForm';
 import List from '@/components/List';
+import Notify from '@/components/ui/Notify';
 
 import {
     Dialog,
@@ -86,20 +87,20 @@ export default function Personas() {
     };
     const handleRoleChange = (role: string) => {
         setSelectedRole(role);
-        if (role === '') {
-            setFilteredPersons(persons);
-        } else {
-            const filtered = persons.filter((p:any) => p.role === role);
-            setFilteredPersons(filtered);
-        }
-
     };
 
     useEffect(() => {
         if (!open) {
             setSelectedPerson(null)
         }
-    }, [open, selectedPerson]);
+        if (selectedRole === '') {
+            setFilteredPersons(persons);
+        } else {
+            const filtered = persons.filter((p: any) => p.role === selectedRole);
+            setFilteredPersons(filtered);
+        }
+
+    }, [open, selectedPerson, persons, selectedRole]);
 
     const roles = [
         { value: 'administrador', label: 'Administrador' },
@@ -127,6 +128,7 @@ export default function Personas() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestion Personas" />
+            <Notify />
             <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                     <h1 className="text-2xl font-bold mb-4">Gestion de Personas   </h1>
@@ -151,10 +153,11 @@ export default function Personas() {
                 </div>
 
                 <List data={filteredPersons}
-                    fields={['name', 'last_name', 'user.email', 'phone']}
+                    fields={['name', 'last_name', 'user.email', 'ci', 'role','phone']}
                     columns={[
                         { label: 'Rol', field: 'role', render: (v) => v?.toUpperCase() },
                         { label: 'Nombre', field: 'name', render: (v, p) => `${p.name} ${p.last_name}` },
+                        { label: 'CI', field: 'ci', render: (p) => `${p}` },
                         { label: 'Correo', field: 'user.email', render: (v) => <a href={`mailto:${v}`}>{v}</a> },
                         { label: 'Teléfono', field: 'phone', render: (v) => <a href={`https://wa.me/591${v}`}>{v}</a> },
                     ]}
