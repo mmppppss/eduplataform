@@ -23,10 +23,16 @@ class CourseController extends Controller
                 $query->where('role', 'profesor');
             })
             ->get();
+        $students = User::with('person')
+            ->whereHas('person', function ($query) {
+                $query->where('role', 'estudiante');
+            })
+            ->get();
         // Retornamos a la vista Inertia
         return Inertia::render('cursos', [
             'courses' => $courses,
-            'teachers' => $teachers
+            'teachers' => $teachers,
+            'students' => $students
         ]);
     }
 

@@ -47,12 +47,13 @@ function AddCourse({ campos, handleClose, selectedCourse = null }) {
 }
 
 export default function Courses() {
-    const { courses, teachers } = usePage<any>().props;
+    const { courses, teachers} = usePage<any>().props;
     const { post } = useForm();
     const [open, setOpen] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
 
     const handleAddCourse = () => setOpen(true);
+
     const handleEdit = (course: any) => {
         setSelectedCourse(course);
         setOpen(true);

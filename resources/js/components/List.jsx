@@ -20,7 +20,7 @@ export default function List({
                 const value = field.split('.').reduce((obj, f) => obj?.[f], item);
                 return value && value.toString().toLowerCase().includes(q);
             })
-        );
+        )||[];
     }, [query, data, fields]);
 
     return (
@@ -45,7 +45,7 @@ export default function List({
                     </thead>
 
                     <tbody>
-                        {filteredData.map((item) => (
+                        {[...(filteredData || [])].map((item) => (
                             <tr key={item.id} className="border-t hover:bg-gray-50">
                                 {columns.map((col) => {
                                     const value = col.field.split('.').reduce((obj, f) => obj?.[f], item);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\EnrollmentController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -33,7 +34,6 @@ Route::middleware(['auth'])->group(function () {
 
     //crud personas
     Route::get('/personas', [PersonController::class, 'index'])->name('personas.index');
-
     Route::post('/personas/store', [PersonController::class, 'store'])
         ->name('personas.store');
     Route::post('/personas/update/{person}', [PersonController::class, 'update'])->name('personas.update');
@@ -41,11 +41,13 @@ Route::middleware(['auth'])->group(function () {
 
     //crud courses
     Route::get('/cursos', [CourseController::class, 'index'])->name('cursos.index');
-
     Route::post('/cursos/store', [CourseController::class, 'store'])
         ->name('cursos.store');
     Route::post('/cursos/update/{course}', [CourseController::class, 'update'])->name('cursos.update');
     Route::post('/cursos/destroy/{course}', [CourseController::class, 'destroy'])->name('cursos.destroy');
+
+    //crud inscripcion
+    Route::get('/inscripcion', [EnrollmentController::class, 'index'])->name('inscripcion.index');
 });
 
 

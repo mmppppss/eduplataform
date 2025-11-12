@@ -4,22 +4,28 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Folder, LayoutGrid, List, PersonStandingIcon, BookOpen } from 'lucide-react';
+import { Folder, LayoutGrid, List, PersonStandingIcon, BookOpen, ClipboardList } from 'lucide-react';
 import AppLogo from './app-logo';
-import {usePage} from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-        role: ['administrador','estudiante', 'profesor', 'contable', 'tutor'],
+        role: ['administrador', 'estudiante', 'profesor', 'contable', 'tutor'],
     },
     {
         title: 'Reportes',
         href: '/reportes',
         icon: Folder,
-        role: ['administrador','estudiante', 'profesor', 'contable', 'tutor'],
+        role: ['administrador', 'estudiante', 'profesor', 'contable', 'tutor'],
+    },
+    {
+        title: 'Personas',
+        href: '/personas',
+        icon: PersonStandingIcon,
+        role: ['administrador'],
     },
     {
         title: 'Cursos',
@@ -28,11 +34,12 @@ const mainNavItems: NavItem[] = [
         role: ['administrador'],
     },
     {
-        title: 'Personas',
-        href: '/personas',
-        icon: PersonStandingIcon,
+        title: 'Inscripciones',
+        href: '/inscripcion',
+        icon: ClipboardList,
         role: ['administrador'],
     },
+
 ];
 
 const footerNavItems: NavItem[] = [
@@ -49,7 +56,7 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
-    const profile = usePage<{ profile: { user: any; role: string }}>().props.profile;
+    const profile = usePage<{ profile: { user: any; role: string } }>().props.profile;
     const navitems = mainNavItems.filter(item => item.role?.includes(profile.role));
     return (
         <Sidebar collapsible="icon" variant="inset">
