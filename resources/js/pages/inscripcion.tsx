@@ -2,6 +2,7 @@ import AppLayout from '@/layouts/app-layout';
 import { useState, useEffect } from 'react';
 import { Head, usePage, useForm } from '@inertiajs/react';
 import List from '@/components/List';
+import { Checkbox } from '@/components/ui/checkbox';
 import DynamicForm from '@/components/DynamicForm';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,6 +11,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import InscriptionForm from '@/components/InscriptionForm';
 
 const breadcrumbs = [
     { title: 'Inscripcion', href: '/inscripcion' },
@@ -18,9 +20,12 @@ const breadcrumbs = [
 
 
 export default function Inscripcion() {
-    const { courses, enrollments } = usePage<any>().props;
+    const { courses, enrollments, students } = usePage<any>().props;
+    const [selectedStudents, setSelectedStudents] = useState<number[]>([]);
+    const [open, setOpen] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState('');
     const [filteredCourses, setFilteredCourses] = useState(enrollments.data);
+    console.log("---",students);
     const handleDelete = (id: number) => {
 
     }
@@ -38,8 +43,6 @@ export default function Inscripcion() {
         }
     }, [selectedCourse]);
 
-
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Inscripciones" />
@@ -47,6 +50,7 @@ export default function Inscripcion() {
             <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                     <h1 className="text-2xl font-bold">Inscripciones</h1>
+                    {selectedCourse !== '' && <Button onClick={() => setOpen(open ? false : true)}>Agregar nuevas Inscripciones</Button>}
                 </div>
 
                 <div className="relative">
@@ -67,9 +71,8 @@ export default function Inscripcion() {
 
                 <List
                     data={filteredCourses}
-                    fields={['id', 'student.name', 'student.last_name', 'course.course_name', 'enroll_date']}
+                    fields={['id', 'student.name', 'student.last_name', 'course.course_name']}
                     columns={[
-                        { label: 'ID', field: 'id' },
                         {
                             label: 'Estudiante',
                             field: 'student',
@@ -79,14 +82,24 @@ export default function Inscripcion() {
                             label: 'Curso',
                             field: 'course.course_name'
                         },
-                        {
-                            label: 'Fecha',
-                            field: 'enroll_date',
-                            render: (enroll_date) => new Date(enroll_date).toLocaleDateString()
-                        }
                     ]}
                     onDelete={handleDelete}
                 />
+                <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogContent className="max-w-2xl w-[90vw] max-h-[90vh] overflow-y-auto rounded-2xl p-6 sm:p-8">
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-semibold">
+                                {courses[selectedCourse] && courses[selectedCourse].course_name}
+                            </DialogTitle>
+                            <InscriptionForm
+                                students={students}
+                                onEnroll={setOpen}
+                                />
+                        </DialogHeader>
+                    </DialogContent>
+
+                </Dialog>
+
             </div>
         </AppLayout>
     );

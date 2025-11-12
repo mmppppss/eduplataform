@@ -26,7 +26,7 @@ class EnrollmentController extends Controller
         }
         $enrollments = $query->paginate(10)->withQueryString();
 
-        $students = Person::where('role', 'student')->select('id', 'name', 'last_name')->get();
+        $students = Person::where('role', 'estudiante')->select('id', 'name', 'last_name', 'ci')->get();
         $courses = Course::select('id', 'course_name')->get();
 
         return Inertia::render('inscripcion', [
