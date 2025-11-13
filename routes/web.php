@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\TutorshipController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -49,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
     //crud inscripcion
     Route::get('/inscripcion', [EnrollmentController::class, 'index'])->name('inscripcion.index');
     Route::post('/inscripcion/{course}', [EnrollmentController::class, 'store'])->name('inscripcion.store');
+
+    //crud tutorias
+    Route::get('/tutorias',[TutorshipController::class, 'index'])->name('tutorias.index');
 });
 
 
