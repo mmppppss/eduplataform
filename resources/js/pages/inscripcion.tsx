@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { useState, useEffect } from 'react';
-import { Head, usePage, useForm } from '@inertiajs/react';
+import { Head, usePage, useForm, router } from '@inertiajs/react';
 import List from '@/components/List';
 import { Checkbox } from '@/components/ui/checkbox';
 import DynamicForm from '@/components/DynamicForm';
@@ -26,9 +26,29 @@ export default function Inscripcion() {
     const [selectedCourse, setSelectedCourse] = useState('');
     const [courseData, setCourseData] = useState({})
     const [filteredCourses, setFilteredCourses] = useState(enrollments.data);
+
+    const { data, setData, post } = useForm({
+        students: []
+    });
     const handleDelete = (id: number) => {
 
     }
+    const handleEnroll = (studentIds: number[]) => {
+        console.log('Estudiantes a inscribir:', studentIds);
+
+        router.post(`/inscripcion/${selectedCourse}`, {
+            students: studentIds
+        }, {
+            onSuccess: () => {
+                setOpen(false);
+                window.location.reload();
+            },
+            onError: (errors) => {
+                console.error(errors);
+                alert("Error al inscribir estudiantes");
+            }
+        });
+    };
     const handleEdit = (id: number) => {
 
     }
@@ -39,7 +59,7 @@ export default function Inscripcion() {
             const filtered = enrollments.data.filter((p: any) => p.course_id === parseInt(selectedCourse));
             setFilteredCourses(filtered);
         }
-        setCourseData(courses.find((r:any) =>  String(r.id) === selectedCourse))
+        setCourseData(courses.find((r: any) => String(r.id) === selectedCourse))
     }, [selectedCourse]);
 
     return (
@@ -89,12 +109,14 @@ export default function Inscripcion() {
                     <DialogContent className="max-w-2xl w-[90vw] max-h-[90vh] overflow-y-auto rounded-2xl p-6 sm:p-8">
                         <DialogHeader>
                             <DialogTitle className="text-xl font-semibold">
-                            {courseData && courseData.course_name}
+                                {courseData && courseData.course_name}
                             </DialogTitle>
                             <InscriptionForm
                                 students={students}
-                                onEnroll={setOpen}
-                                />
+                                selectedStudents={selectedStudents}
+                                setSelectedStudents={setSelectedStudents}
+                                onEnroll={handleEnroll}
+                            />
                         </DialogHeader>
                     </DialogContent>
 

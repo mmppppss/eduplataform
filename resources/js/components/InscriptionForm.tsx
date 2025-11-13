@@ -13,13 +13,15 @@ interface CourseEnrollmentSimpleProps {
     courseName: string;
     students: Student[]; // Los estudiantes disponibles (ya filtrados por no inscritos)
     onEnroll: (studentIds: number[]) => void; // Función para enviar las inscripciones
+    selectedStudents: number[];
+    setSelectedStudents: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 export default function InscriptionForm({
     students,
+    selectedStudents, setSelectedStudents,
     onEnroll
 }: CourseEnrollmentSimpleProps) {
-    const [selectedStudents, setSelectedStudents] = useState<number[]>([]);
 
     const handleCheckboxChange = (studentId: number) => {
         setSelectedStudents(prev =>

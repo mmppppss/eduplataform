@@ -48,6 +48,7 @@ Route::middleware(['auth'])->group(function () {
 
     //crud inscripcion
     Route::get('/inscripcion', [EnrollmentController::class, 'index'])->name('inscripcion.index');
+    Route::post('/inscripcion/{course}', [EnrollmentController::class, 'store'])->name('inscripcion.store');
 });
 
 
