@@ -24,8 +24,8 @@ export default function Inscripcion() {
     const [selectedStudents, setSelectedStudents] = useState<number[]>([]);
     const [open, setOpen] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState('');
+    const [courseData, setCourseData] = useState({})
     const [filteredCourses, setFilteredCourses] = useState(enrollments.data);
-    console.log("---",students);
     const handleDelete = (id: number) => {
 
     }
@@ -33,14 +33,13 @@ export default function Inscripcion() {
 
     }
     useEffect(() => {
-        console.log(selectedCourse);
         if (selectedCourse === '') {
             setFilteredCourses(enrollments.data);
         } else {
             const filtered = enrollments.data.filter((p: any) => p.course_id === parseInt(selectedCourse));
-            console.log(filtered);
             setFilteredCourses(filtered);
         }
+        setCourseData(courses.find((r:any) =>  String(r.id) === selectedCourse))
     }, [selectedCourse]);
 
     return (
@@ -54,7 +53,8 @@ export default function Inscripcion() {
                 </div>
 
                 <div className="relative">
-                    <label htmlFor="course">Curso: </label><select
+                    <label htmlFor="course">Curso: </label>
+                    <select
                         name="course"
                         className="border rounded px-3 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value={selectedCourse}
@@ -89,7 +89,7 @@ export default function Inscripcion() {
                     <DialogContent className="max-w-2xl w-[90vw] max-h-[90vh] overflow-y-auto rounded-2xl p-6 sm:p-8">
                         <DialogHeader>
                             <DialogTitle className="text-xl font-semibold">
-                                {courses[selectedCourse] && courses[selectedCourse].course_name}
+                            {courseData && courseData.course_name}
                             </DialogTitle>
                             <InscriptionForm
                                 students={students}
