@@ -2,9 +2,8 @@ import AppLayout from '@/layouts/app-layout';
 import { useState, useEffect } from 'react';
 import { Head, usePage, useForm, router } from '@inertiajs/react';
 import List from '@/components/List';
-import { Checkbox } from '@/components/ui/checkbox';
-import DynamicForm from '@/components/DynamicForm';
 import { Button } from '@/components/ui/button';
+import Notify from '@/components/ui/Notify';
 import {
     Dialog,
     DialogContent,
@@ -41,7 +40,6 @@ export default function Inscripcion() {
         }, {
             onSuccess: () => {
                 setOpen(false);
-                window.location.reload();
             },
             onError: (errors) => {
                 console.error(errors);
@@ -65,7 +63,7 @@ export default function Inscripcion() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Inscripciones" />
-
+            <Notify />
             <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                     <h1 className="text-2xl font-bold">Inscripciones</h1>

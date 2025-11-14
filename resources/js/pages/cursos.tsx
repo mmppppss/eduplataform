@@ -4,6 +4,7 @@ import { Head, usePage, useForm } from '@inertiajs/react';
 import List from '@/components/List';
 import DynamicForm from '@/components/DynamicForm';
 import { Button } from '@/components/ui/button';
+import Notify from '@/components/ui/Notify';
 import {
     Dialog,
     DialogContent,
@@ -88,7 +89,7 @@ export default function Courses() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestión de Cursos" />
-
+            <Notify/>
             <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                     <h1 className="text-2xl font-bold">Gestión de Cursos</h1>
