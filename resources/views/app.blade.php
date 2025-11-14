@@ -30,7 +30,7 @@
             }
         </style>
 
-        <title inertia>{{ config('setup.name', 'app.name') }}</title>
+        <title inertia>{{ config('setup.name') }}</title>
 
         <link rel="icon" href="{{config('setup.icon','/favicon.ico')}}" sizes="any">
         <link rel="icon" href="{{config('setup.icon','/favicon.ico')}}" type="image/svg+xml">
