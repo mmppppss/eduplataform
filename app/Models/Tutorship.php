@@ -11,15 +11,15 @@ class Tutorship extends Model
 
     protected $fillable = [
         'tutor_id',
-        'estudiante_id',
+        'student_id',
     ];
     public function tutor()
     {
         return $this->belongsTo(Person::class, 'tutor_id');
     }
 
-    public function estudiante()
+    public function student()
     {
-        return $this->belongsTo(Person::class, 'estudiante_id');
+        return $this->belongsTo(Person::class, 'student_id');
     }
 }

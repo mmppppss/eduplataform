@@ -107,6 +107,8 @@ export default function Personas() {
         { value: 'profesor', label: 'Profesor' },
         { value: 'estudiante', label: 'Estudiante' },
         { value: 'contable', label: 'Contable' },
+        { value: 'tutor', label: 'Tutor' },
+
 
     ]
     const campos = [

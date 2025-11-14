@@ -53,6 +53,10 @@ Route::middleware(['auth'])->group(function () {
 
     //crud tutorias
     Route::get('/tutorias',[TutorshipController::class, 'index'])->name('tutorias.index');
+    Route::post('/tutorias/{tutorship}', [TutorshipController::class, 'store'])->name('tutorias.store');
+    Route::post('/tutorias/destroy/{tutorship}', [TutorshipController::class, 'destroy'])->name('tutorias.destroy');
+    Route::post('/tutorias/update/{tutorship}', [TutorshipController::class, 'update'])->name('tutorias.update');
+
 });
 
 

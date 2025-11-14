@@ -9,7 +9,6 @@ export default function DynamicForm({ fields, onCancel, postRoute, initialData =
 
     useEffect(() => {
         setData(initialData);
-        console.log(data['role']);
     }, [initialData]);
 
     const handleChange = (e) => {
