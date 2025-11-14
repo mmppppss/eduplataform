@@ -8,6 +8,7 @@ use App\Http\Controllers\PersonController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\TutorshipController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -56,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tutorias/{tutorship}', [TutorshipController::class, 'store'])->name('tutorias.store');
     Route::post('/tutorias/destroy/{tutorship}', [TutorshipController::class, 'destroy'])->name('tutorias.destroy');
     Route::post('/tutorias/update/{tutorship}', [TutorshipController::class, 'update'])->name('tutorias.update');
+
+    Route::get('/pagos', [PaymentController::class, 'index'])->name('pagos.index');
 
 });
 

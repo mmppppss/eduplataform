@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Folder, LayoutGrid,  PersonStandingIcon, BookOpen, ClipboardList, UsersRound } from 'lucide-react';
+import { Folder, LayoutGrid,  PersonStandingIcon, BookOpen, ClipboardList, UsersRound, HandCoins } from 'lucide-react';
 import AppLogo from './app-logo';
 import { usePage } from '@inertiajs/react';
 
@@ -44,6 +44,12 @@ const mainNavItems: NavItem[] = [
         href: '/tutorias',
         icon: UsersRound,
         role: ['administrador'],
+    },
+    {
+        title: 'Pagos',
+        href: '/pagos',
+        icon: HandCoins,
+        role: ['administrador','contable'],
     }
 
 ];
