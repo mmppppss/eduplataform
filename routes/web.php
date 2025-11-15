@@ -53,13 +53,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/inscripcion/{course}', [EnrollmentController::class, 'store'])->name('inscripcion.store');
 
     //crud tutorias
-    Route::get('/tutorias',[TutorshipController::class, 'index'])->name('tutorias.index');
+    Route::get('/tutorias', [TutorshipController::class, 'index'])->name('tutorias.index');
     Route::post('/tutorias/{tutorship}', [TutorshipController::class, 'store'])->name('tutorias.store');
     Route::post('/tutorias/destroy/{tutorship}', [TutorshipController::class, 'destroy'])->name('tutorias.destroy');
     Route::post('/tutorias/update/{tutorship}', [TutorshipController::class, 'update'])->name('tutorias.update');
 
     Route::get('/pagos', [PaymentController::class, 'index'])->name('pagos.index');
-
+    Route::post('/pagos/{payment}', [PaymentController::class, 'update'])->name('pagos.update');
 });
 
 

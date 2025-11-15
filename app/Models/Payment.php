@@ -15,6 +15,8 @@ class Payment extends Model
         'amount',
         'state',
         'type',
+        'file_path',
+        'method',
     ];
 
     protected $casts = [
@@ -26,4 +28,5 @@ class Payment extends Model
     {
         return $this->belongsTo(Enrollment::class, 'enrollment_id');
     }
+
 }

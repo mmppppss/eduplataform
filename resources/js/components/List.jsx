@@ -7,7 +7,8 @@ export default function List({
     fields = [],
     columns = [],
     onEdit,
-    onDelete
+    onDelete,
+    otherActions=[],
 }) {
     const [query, setQuery] = useState('');
 
@@ -40,7 +41,7 @@ export default function List({
                             {columns.map((col) => (
                                 <th key={col.label} className="py-3 px-4">{col.label}</th>
                             ))}
-                            {(onEdit || onDelete) && <th className="py-3 px-4 text-center">Acciones</th>}
+                            {(onEdit || onDelete || otherActions && otherActions.length>=1 ) && <th className="py-3 px-4 text-center">Acciones</th>}
                         </tr>
                     </thead>
 
@@ -56,7 +57,7 @@ export default function List({
                                     );
                                 })}
 
-                                {(onEdit || onDelete) && (
+                                {(onEdit || onDelete || otherActions) && (
                                     <td className="py-2 px-4 flex gap-2 justify-center">
                                         {onEdit && (
                                             <Button variant="outline" onClick={() => onEdit(item)}>
@@ -68,10 +69,22 @@ export default function List({
                                                 Eliminar
                                             </Button>
                                         )}
+                                        {otherActions.map((action) => (
+                                            <Button key={action.label} onClick={() => action.onClick(item)}>
+                                                {action.label}
+                                            </Button>
+                                        ))}
                                     </td>
                                 )}
                             </tr>
                         ))}
+                        {filteredData.length === 0 && (
+                            <tr>
+                                <td colSpan={columns.length + 1} className="py-2 px-4 text-center">
+                                    No hay nada que mostrar :)
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
