@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\TwoFactorController;
+
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\CourseController;
@@ -60,6 +62,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/pagos', [PaymentController::class, 'index'])->name('pagos.index');
     Route::post('/pagos/{payment}', [PaymentController::class, 'update'])->name('pagos.update');
+
+
+    //config
+    Route::get('/config', [ConfigController::class, 'index'])->name('configs.index');
+    Route::post('/configs/{key}', [ConfigController::class, 'update'])->name('configs.update');
 });
 
 

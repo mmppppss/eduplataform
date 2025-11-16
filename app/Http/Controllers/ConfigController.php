@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Config;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+
 
 class ConfigController extends Controller
 {
@@ -12,7 +14,11 @@ class ConfigController extends Controller
      */
     public function index()
     {
-        //
+        // Obtener todas las configuraciones y convertirlas a array clave-valor
+        $configs = Config::all()->pluck('value', 'key')->toArray();
+        return Inertia::render('config', [
+            'configs' => $configs
+        ]);
     }
 
     /**
@@ -50,9 +56,22 @@ class ConfigController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Config $config)
+    public function update(Request $request, $key)
     {
-        //
+        $request->validate([
+            'value' => 'required'
+        ]);
+
+        try {
+            Config::updateOrCreate(
+                ['key' => $key],
+                ['value' => $request->value]
+            );
+
+            return redirect()->back()->with('success', 'Configuración actualizada correctamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al actualizar la configuración.');
+        }
     }
 
     /**

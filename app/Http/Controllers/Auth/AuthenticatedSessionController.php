@@ -13,6 +13,8 @@ use Inertia\Response;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\HtmlMail;
 
+use App\Helpers\ConfigHelper;
+
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -35,29 +37,37 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        Auth::logout();
+        $twofaAdminEnabled = ConfigHelper::getBool('twofa_admin');
+        $twofaUserEnabled = ConfigHelper::getBool('twofa_user');
+        $isAdminOrAccounting = in_array($user->person->role, ['administrador', 'contable']);
+        if (($twofaAdminEnabled && $isAdminOrAccounting)||($twofaUserEnabled && !$isAdminOrAccounting)) {
+            Auth::logout();
 
-        $code = rand(1000, 9999);
+            $code = rand(1000, 9999);
 
-        $user->two_factor_code = $code;
-        $user->two_factor_expires_at = now()->addMinutes(5);
-        $user->save();
+            $user->two_factor_code = $code;
+            $user->two_factor_expires_at = now()->addMinutes(5);
+            $user->save();
 
-        $request->session()->put('2fa:user:id', $user->id);
+            $request->session()->put('2fa:user:id', $user->id);
 
-        // enviar correo con el código
-        $data = [
-            'contenido' => 'Tu codigo es: <strong>'.$code.'</strong>',
-        ];
+            // enviar correo con el código
+            $data = [
+                'contenido' => 'Tu codigo es: <strong>' . $code . '</strong>',
+            ];
 
-        Mail::to($user->email)
-            ->queue(new HtmlMail('Codigo de un solo uso para autenticacion', $data));
+            Mail::to($user->email)
+                ->queue(new HtmlMail('Codigo de un solo uso para autenticacion', $data));
 
+            $request->session()->regenerate();
+
+            //redirigir al formulario de verificación
+            return redirect()->route('verify.code.form')
+                ->with('status', 'Se envió un código a tu correo.');
+        }
         $request->session()->regenerate();
 
-        //redirigir al formulario de verificación
-        return redirect()->route('verify.code.form')
-            ->with('status', 'Se envió un código a tu correo.');
+        return redirect()->intended(route('dashboard'));
     }
 
     /**
