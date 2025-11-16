@@ -67,10 +67,8 @@ export default function Courses() {
         if (confirm('¿Seguro que quieres eliminar este curso?')) {
             post(`/cursos/destroy/${id}`, {
                 onSuccess: () => {
-                    console.log('Curso desactivado correctamente');
                 },
                 onError: (errors) => {
-                    console.error(errors);
                 }
             })
         }

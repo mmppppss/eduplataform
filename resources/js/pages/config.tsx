@@ -56,7 +56,6 @@ export default function Configuracion() {
     const [selected, setSelected] = useState(null);
     const { configs } = usePage<any>().props;
     const { post } = useForm();
-    console.log(configs);
 
     const handleEdit = (config: any) => {
         setSelected(config);
@@ -71,10 +70,8 @@ export default function Configuracion() {
             value: newValue
         }, {
             onSuccess: () => {
-                console.log('Configuración actualizada correctamente');
             },
             onError: (errors) => {
-                console.error(errors);
             }
         })
     };

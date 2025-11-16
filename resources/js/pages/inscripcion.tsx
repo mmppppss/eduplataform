@@ -33,7 +33,6 @@ export default function Inscripcion() {
 
     }
     const handleEnroll = (studentIds: number[]) => {
-        console.log('Estudiantes a inscribir:', studentIds);
 
         router.post(`/inscripcion/${selectedCourse}`, {
             students: studentIds
@@ -42,7 +41,6 @@ export default function Inscripcion() {
                 setOpen(false);
             },
             onError: (errors) => {
-                console.error(errors);
                 alert("Error al inscribir estudiantes");
             }
         });
