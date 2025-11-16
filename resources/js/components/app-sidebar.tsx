@@ -55,7 +55,7 @@ const mainNavItems: NavItem[] = [
         title: 'Pagos',
         href: '/pagos',
         icon: HandCoins,
-        role: ['administrador','contable'],
+        role: ['contable'],
     }
 
 ];
