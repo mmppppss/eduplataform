@@ -13,7 +13,7 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-        role: ['administrador', 'estudiante', 'profesor', 'contable', 'tutor'],
+        role: ['administrador'],
     },
     {
         title: 'Reportes',
