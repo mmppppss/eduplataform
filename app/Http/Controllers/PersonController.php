@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Person;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
 
 class PersonController extends Controller
 {
@@ -21,66 +23,82 @@ class PersonController extends Controller
 
     public function store(Request $request)
     {
-        $validatedPerson = $request->validate([
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'ci' => 'required|numeric|unique:persons,ci',
-            'phone' => 'required|max:20',
-            'address' => 'nullable|string|max:255',
-            'birth_date' => 'nullable|date',
-            'role' => 'required|string|max:50',
-        ]);
+        try {
+            $validatedPerson = $request->validate([
+                'name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'ci' => 'required|numeric|unique:persons,ci',
+                'phone' => 'required|max:20',
+                'address' => 'nullable|string|max:255',
+                'birth_date' => 'nullable|date',
+                'role' => 'required|string|max:50',
+            ]);
 
-        $validatedUser = $request->validate([
-            'email' => 'required|email|unique:users,email',
-        ]);
+            $validatedUser = $request->validate([
+                'email' => 'required|email|unique:users,email',
+            ]);
 
-        // Crear la persona
-        $person = Person::create($validatedPerson);
+            // Crear la persona
+            $person = Person::create($validatedPerson);
 
-        // Crear el usuario asociado
-        $user = User::create([
-            'email' => $validatedUser['email'],
-            'password' => Hash::make($validatedPerson['ci']), // contraseña temporal = CI
-            'person_id' => $person->id,
-        ]);
+            // Crear el usuario asociado
+            $user = User::create([
+                'email' => $validatedUser['email'],
+                'password' => Hash::make($validatedPerson['ci']), // contraseña temporal = CI
+                'person_id' => $person->id,
+            ]);
 
-        return redirect()->route('personas.index')->with('success', 'Persona creada exitosamente.');
+            return redirect()->route('personas.index')->with('success', 'Persona creada exitosamente.');
+        } catch (ValidationException $e) {
+            return redirect()->back()->with('error', 'Error al procesar los datos ' . $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => 'Error al crear la persona: ' . $e->getMessage()
+            ]);
+        }
     }
 
 
     public function update(Request $request, Person $person)
     {
-        $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'last_name'   => 'required|string|max:255',
-            'email'       => 'required|email|unique:users,email,' . $person->user->id,
-            'phone'       => 'required|max:20',
-            'address'     => 'nullable|string|max:255',
-            'birth_date'  => 'nullable|date',
-            'role'        => 'required|string|max:50',
-        ]);
-        if(!$validated){
-            return redirect()->back()->with('error', 'Error al actualizar la persona.');
+        try {
+            $validated = $request->validate([
+                'name'        => 'required|string|max:255',
+                'last_name'   => 'required|string|max:255',
+                'email'       => 'required|email|unique:users,email,' . $person->user->id,
+                'phone'       => 'required|max:20',
+                'address'     => 'nullable|string|max:255',
+                'birth_date'  => 'nullable|date',
+                'role'        => 'required|string|max:50',
+            ]);
+            if (!$validated) {
+                return redirect()->back()->with('error', 'Error al actualizar la persona.');
+            }
+
+
+            // Actualizamos los campos internos del modelo Person
+            $person->update([
+                'name'   => $validated['name'],
+                'last_name'    => $validated['last_name'],
+                'phone'        => $validated['phone'],
+                'address'      => $validated['address'] ?? null,
+                'birth_date'   => $validated['birth_date'] ?? null,
+                'role'         => $validated['role'],
+            ]);
+
+            // Y sincronizamos los datos del usuario relacionado
+            $person->user->update([
+                'email' => $validated['email'],
+            ]);
+
+            return redirect()->route('personas.index')->with('success', 'Persona actualizada exitosamente.');
+        } catch (ValidationException $e) {
+            return redirect()->back()->with('error', 'Error al procesar los datos ' . $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => 'Error al crear la persona: ' . $e->getMessage()
+            ]);
         }
-
-
-        // Actualizamos los campos internos del modelo Person
-        $person->update([
-            'name'   => $validated['name'],
-            'last_name'    => $validated['last_name'],
-            'phone'        => $validated['phone'],
-            'address'      => $validated['address'] ?? null,
-            'birth_date'   => $validated['birth_date'] ?? null,
-            'role'         => $validated['role'],
-        ]);
-
-        // Y sincronizamos los datos del usuario relacionado
-        $person->user->update([
-            'email' => $validated['email'],
-        ]);
-
-        return redirect()->route('personas.index')->with('success', 'Persona actualizada exitosamente.');
     }
     public function destroy(Person $person)
     {
