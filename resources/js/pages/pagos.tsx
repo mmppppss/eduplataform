@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { useState} from 'react';
+import { useState } from 'react';
 import { Head, usePage, useForm } from '@inertiajs/react';
 import List from '@/components/List';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import ImageDialog from '@/components/ImageDialog';
 
 const breadcrumbs = [
     { title: 'Pagos', href: '/pagos' },
@@ -138,10 +139,21 @@ export default function Pagos() {
     const { paidPayments, pendingPayments } = usePage<any>().props;
     const [open, setOpen] = useState(false);
     const [selectedPayment, setSelectedPayment] = useState(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const handlePay = (payment: any) => {
         setSelectedPayment(payment);
         setOpen(true);
+    }
+    const handleShowComprobante = (payment: any) => {
+        const comprobante = payment.file_path;
+        if (comprobante) {
+            setSelectedItem(comprobante);
+            setIsDialogOpen(true);
+        } else {
+            alert("No se ha proporcionado un comprobante")
+        }
     }
 
     const handlePrintRecibe = (payment: any) => {
@@ -335,6 +347,13 @@ export default function Pagos() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Pagos" />
             <Notify />
+            {selectedItem && (
+                <ImageDialog
+                    isOpen={isDialogOpen}
+                    onClose={() => setIsDialogOpen(false)}
+                    item={selectedItem}
+                />
+            )}
             <div className="p-6">
                 <h2 className="text-xl font-bold">Pagos Pendientes</h2>
                 <List
@@ -401,6 +420,10 @@ export default function Pagos() {
                         {
                             label: "Recibo",
                             onClick: (item) => handlePrintRecibe(item),
+                        },
+                        {
+                            label: "Comprobante",
+                            onClick: (item) => handleShowComprobante(item)
                         }
                     ]}
                 />

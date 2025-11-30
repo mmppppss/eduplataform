@@ -29,7 +29,7 @@ class PaymentController extends Controller
                     'type' => $payment->type,
                     'state' => $payment->state,
                     'method' => $payment->method,
-                    'file_path' => $payment->file_path,
+                    'file_path' => $payment->file_path ? asset('storage/' . $payment->file_path): null,
                 ];
             });
 
