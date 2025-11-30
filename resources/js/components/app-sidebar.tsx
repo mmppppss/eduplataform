@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Folder, LayoutGrid,  PersonStandingIcon, BookOpen, ClipboardList, UsersRound, HandCoins, Settings } from 'lucide-react';
+import { Folder, LayoutGrid,  PersonStandingIcon, BookOpen, ClipboardList, UsersRound, HandCoins, Settings, Coins } from 'lucide-react';
 import AppLogo from './app-logo';
 import { usePage } from '@inertiajs/react';
 
@@ -56,8 +56,13 @@ const mainNavItems: NavItem[] = [
         href: '/pagos',
         icon: HandCoins,
         role: ['contable'],
+    },
+    {
+        title: 'Historial de Pagos',
+        href: '/historialpagos',
+        icon: Coins,
+        role: ['contable'],
     }
-
 ];
 
 const footerNavItems: NavItem[] = [

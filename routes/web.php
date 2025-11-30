@@ -57,8 +57,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['role:contable'])->group(function () {
-
         Route::get('/pagos', [PaymentController::class, 'index'])->name('pagos.index');
+        Route::get('/historialpagos', [PaymentController::class, 'indexpaid'])->name('pagos.indexpaid');
         Route::post('/pagos/{payment}', [PaymentController::class, 'update'])->name('pagos.update');
     });
 

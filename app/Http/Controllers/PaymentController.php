@@ -14,25 +14,6 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $paidPayments = Payment::with(['enrollment.student'])
-            ->where('state', 'pagado')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($payment) {
-                return [
-                    'id' => $payment->id,
-                    'enrollment_id' => $payment->enrollment_id,
-                    'student_name' => $payment->enrollment->student ?
-                        $payment->enrollment->student->name . ' ' . $payment->enrollment->student->last_name : null,
-                    'date' => $payment->date->format('Y-m-d'),
-                    'amount' => $payment->amount,
-                    'type' => $payment->type,
-                    'state' => $payment->state,
-                    'method' => $payment->method,
-                    'file_path' => $payment->file_path ? asset('storage/' . $payment->file_path): null,
-                ];
-            });
-
         $pendingPayments = Payment::with(['enrollment.student'])
             ->where('state', '!=', 'pagado')
             ->orderBy('created_at', 'desc')
@@ -53,11 +34,33 @@ class PaymentController extends Controller
             });
 
         return Inertia::render('pagos', [
-            'paidPayments' => $paidPayments,
             'pendingPayments' => $pendingPayments
         ]);
     }
-
+    public function indexpaid()
+    {
+        $paidPayments = Payment::with(['enrollment.student'])
+            ->where('state', 'pagado')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($payment) {
+                return [
+                    'id' => $payment->id,
+                    'enrollment_id' => $payment->enrollment_id,
+                    'student_name' => $payment->enrollment->student ?
+                        $payment->enrollment->student->name . ' ' . $payment->enrollment->student->last_name : null,
+                    'date' => $payment->date->format('Y-m-d'),
+                    'amount' => $payment->amount,
+                    'type' => $payment->type,
+                    'state' => $payment->state,
+                    'method' => $payment->method,
+                    'file_path' => $payment->file_path ? asset('storage/' . $payment->file_path) : null,
+                ];
+            });
+        return Inertia::render('historialpagos', [
+            'paidPayments' => $paidPayments,
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
