@@ -25,7 +25,7 @@ class EnrollmentController extends Controller
         if ($request->has('course_id') && $request->course_id) {
             $query->where('course_id', $request->course_id);
         }
-        $enrollments = $query->paginate(10)->withQueryString();
+        $enrollments = $query->paginate(200)->withQueryString();
 
         $students = Person::where('role', 'estudiante')->select('id', 'name', 'last_name', 'ci')->get();
         $courses = Course::select('id', 'course_name')->get();

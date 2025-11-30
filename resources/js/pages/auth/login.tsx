@@ -69,12 +69,12 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             </Button>
                         </div>
 
-                        <div className="text-center text-sm text-muted-foreground">
+                        {/*<div className="text-center text-sm text-muted-foreground">
                             ¿No tienes una cuenta?{' '}
                             <TextLink href={route('register')} tabIndex={5}>
                                 Sign up (borrar cuando este terminado)
                             </TextLink>
-                        </div>
+                        </div>*/}
                     </>
                 )}
             </Form>
