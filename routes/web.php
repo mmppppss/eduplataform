@@ -12,6 +12,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\TutorshipController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -54,6 +55,11 @@ Route::middleware(['auth'])->group(function () {
         //config
         Route::get('/config', [ConfigController::class, 'index'])->name('configs.index');
         Route::post('/configs/{key}', [ConfigController::class, 'update'])->name('configs.update');
+
+        //horarios
+        Route::get('/horarios', [ScheduleController::class, 'index'])->name('horarios.index');
+        Route::post('/horarios/', [ScheduleController::class, 'store'])->name('horarios.store');
+        Route::post('/horarios/delete', [ScheduleController::class, 'destroy'])->name('horarios.destroy');
     });
 
     Route::middleware(['role:contable'])->group(function () {

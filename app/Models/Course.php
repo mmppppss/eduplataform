@@ -18,9 +18,14 @@ class Course extends Model
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
+
     public function Person()
     {
         return $this->teacher->person();
     }
 
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }
