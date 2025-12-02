@@ -69,6 +69,15 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/attendances', [AttendanceController::class, 'index'])
+        ->name('attendances.index');
+
+    Route::get('/attendances/list', [AttendanceController::class, 'list'])
+        ->name('attendances.list');
+
+    Route::post('/attendances', [AttendanceController::class, 'store'])
+        ->name('attendances.store');
 });
 
 
