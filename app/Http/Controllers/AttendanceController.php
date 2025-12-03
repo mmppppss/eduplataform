@@ -9,6 +9,7 @@ use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 
 class AttendanceController extends Controller
@@ -36,18 +37,48 @@ class AttendanceController extends Controller
             ->get();
 
         $enrollmentIds = $enrollments->pluck('id');
+        $today = Carbon::today()->toDateString();
 
         $attendances = Attendance::select('id', 'enrollment_id', 'state', 'date')
             ->whereIn('enrollment_id', $enrollmentIds)
+            ->whereDate('date', $today)
             ->get();
 
         return Inertia::render('asistencia', [
             'courses'     => $courses,
             'enrollments' => $enrollments,
             'attendances' => $attendances,
+            'today' => $today
         ]);
     }
 
+    public function indexNoTeacher()
+    {
+        $user = Auth::user();
+        $personId = $user->person->id;
+
+        // Traemos los enrollments del estudiante
+        $enrollments = Enrollment::with(['course:id,course_name'])
+            ->where('student_id', $personId)
+            ->get();
+
+        $enrollmentIds = $enrollments->pluck('id');
+
+        // Traemos las asistencias de esos enrollments
+        $attendances = Attendance::whereIn('enrollment_id', $enrollmentIds)
+            ->get();
+
+        // Cursos asociados al estudiante
+        $courseIds = $enrollments->pluck('course_id');
+        $courses = Course::whereIn('id', $courseIds)->get();
+
+        return Inertia::render('asistencia', [
+            'courses'     => $courses,
+            'enrollments' => $enrollments,
+            'attendances' => $attendances,
+            'person_id'   => $personId,
+        ]);
+    }
 
 
     public function list(Request $request)

@@ -67,13 +67,13 @@ const mainNavItems: NavItem[] = [
         title: 'Horarios',
         href: '/horarios',
         icon: List,
-        role: ['administrador', 'profesor'],
+        role: ['administrador', 'profesor', 'estudiante'],
     },
     {
         title: 'Asistencias',
         href: '/asistencias',
         icon: List,
-        role: ['administrador', 'profesor'],
+        role: ['administrador', 'profesor', 'estudiante'],
     }
 ];
 

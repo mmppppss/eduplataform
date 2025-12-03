@@ -15,7 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Horarios() {
-    const { courses} = usePage<any>().props
+    const { courses, role} = usePage<any>().props
     const [modify, setModify] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
@@ -37,7 +37,7 @@ export default function Horarios() {
             <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                     <h1 className="text-2xl font-bold">Horarios</h1>
-                    <Button onClick={handleModify}>Modificar Horarios</Button>
+                    {role=="administrador" && <Button onClick={handleModify}>Modificar Horarios</Button> }
                 </div>
 
                 <div className="relative">

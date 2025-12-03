@@ -11,7 +11,7 @@ const breadcrumbs = [
 
 
 export default function Asistencia() {
-    const { courses, enrollments, attendances } = usePage().props;
+    const { courses, enrollments, attendances, today } = usePage().props;
 
     const [selectedCourse, setSelectedCourse] = useState(null);
 
@@ -31,6 +31,7 @@ export default function Asistencia() {
             <div className="p-6 space-y-6">
                 <div className="flex items-center justify-between mb-4">
                     <h1 className="text-2xl font-bold">Gestión de Asistencias</h1>
+                    <h3 className="text-2xl font-bold">Fecha: {today}</h3>
                 </div>
 
                 {/* Selección de curso */}

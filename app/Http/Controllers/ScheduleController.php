@@ -5,21 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Models\Enrollment;
 
 class ScheduleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        $courses = Course::with('schedules')
-            ->orderBy('course_name')
-            ->get();
+        $user = Auth::user();
+        $role = $user->person->role;
+
+        if ($role === 'estudiante') {
+            $courseIds = Enrollment::where('student_id', $user->person->id)
+                ->pluck('course_id');
+            $courses = Course::with('schedules')
+                ->whereIn('id', $courseIds)
+                ->orderBy('course_name')
+                ->get();
+        } else {
+            $courses = Course::with('schedules')
+                ->orderBy('course_name')
+                ->get();
+        }
 
         return Inertia::render('horarios', [
-            'courses' => $courses
+            'courses' => $courses,
+            'role' => $role,
         ]);
     }
 

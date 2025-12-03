@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\TwoFactorController;
-
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PersonController;
@@ -58,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/configs/{key}', [ConfigController::class, 'update'])->name('configs.update');
 
         //horarios
-        Route::get('/horarios', [ScheduleController::class, 'index'])->name('horarios.index');
+        //Route::get('/horarios', [ScheduleController::class, 'index'])->name('horarios.index');
         Route::post('/horarios/', [ScheduleController::class, 'store'])->name('horarios.store');
         Route::post('/horarios/delete', [ScheduleController::class, 'destroy'])->name('horarios.destroy');
     });
@@ -69,11 +68,16 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/pagos/{payment}', [PaymentController::class, 'update'])->name('pagos.update');
     });
 
+
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+
     Route::middleware(['role:profesor'])->group(function () {
-        Route::get('/asistencias', [AttendanceController::class, 'index'])
-            ->name('attendances.index');
+
+        //Route::get('/horarios', [ScheduleController::class, 'index'])->name('horarios.index');
+
+        //Route::get('/asistencias', [AttendanceController::class, 'index'])
+        //    ->name('attendances.index');
 
         Route::get('/asistencias/list', [AttendanceController::class, 'list'])
             ->name('attendances.list');
@@ -81,6 +85,18 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/asistencias', [AttendanceController::class, 'store'])
             ->name('attendances.store');
     });
+
+    Route::middleware(['role:estudiante'])->group(function () {
+
+        Route::get('/horarios', [ScheduleController::class, 'index'])->name('horarios.index');
+
+        Route::get('/asistencias', [AttendanceController::class, 'indexNoTeacher'])
+            ->name('attendances.indexNoTeacher');
+    });
+
+    Route::get('/horarios', [ScheduleController::class, 'index'])->name('horarios.index');
+    Route::get('/asistencias', [AttendanceController::class, 'index'])
+            ->name('attendances.index');
 });
 
 

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function AttendanceList({ enrollments, attendances, onSave }) {
     const initialState = {};
-    console.log(enrollments, attendances);
+    console.log(enrollments);
     attendances.forEach((a) => {
         initialState[a.enrollment_id] = a.state === "asistió";
     });
