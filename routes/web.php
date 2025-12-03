@@ -13,6 +13,7 @@ use App\Http\Controllers\TutorshipController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -70,14 +71,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/attendances', [AttendanceController::class, 'index'])
-        ->name('attendances.index');
+    Route::middleware(['role:profesor'])->group(function () {
+        Route::get('/asistencias', [AttendanceController::class, 'index'])
+            ->name('attendances.index');
 
-    Route::get('/attendances/list', [AttendanceController::class, 'list'])
-        ->name('attendances.list');
+        Route::get('/asistencias/list', [AttendanceController::class, 'list'])
+            ->name('attendances.list');
 
-    Route::post('/attendances', [AttendanceController::class, 'store'])
-        ->name('attendances.store');
+        Route::post('/asistencias', [AttendanceController::class, 'store'])
+            ->name('attendances.store');
+    });
 });
 
 

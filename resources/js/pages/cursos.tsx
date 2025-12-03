@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { Head, usePage, useForm } from '@inertiajs/react';
 import List from '@/components/List';
 import DynamicForm from '@/components/DynamicForm';
