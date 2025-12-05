@@ -32,7 +32,7 @@ export default function Horarios() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Gestion Personas" />
+            <Head title="Gestion de Horarios" />
             <Notify />
             <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
@@ -46,6 +46,7 @@ export default function Horarios() {
                         value={selectedCourseId}
                         onChange={(e) => handleCourseChange(e.target.value)}
                     >
+                        <option value="">Seleccione un curso</option>
                         {courses.map((r) => (
                             <option key={r.id} value={r.id}>
                                 {r.course_name}

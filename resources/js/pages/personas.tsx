@@ -133,7 +133,7 @@ export default function Personas() {
             <Notify />
             <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                    <h1 className="text-2xl font-bold">Gestion de Personas   </h1>
+                    <h1 className="text-2xl font-bold">Gestión de Personas y Preinscripción</h1>
                     <Button onClick={handleAddPerson}>Agregar Persona</Button>
                 </div>
 

@@ -13,7 +13,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AttendanceController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -21,10 +21,20 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/reportes', function () {
-        return Inertia::render('reportes');
-    })->name('reportes');
+
+    Route::get('/reportes', [ReportController::class, 'index'])->name('reportes.index');
+
+    Route::post('/reportes/asistencias', [ReportController::class, 'attendanceReport'])
+        ->name('reportes.asistencias');
+
+    Route::post('/reportes/inscripciones', [ReportController::class, 'enrollmentReport'])
+        ->name('reportes.inscripciones');
+
+    Route::post('/reportes/pagos', [ReportController::class, 'paymentsReport'])
+        ->name('reportes.pagos');
+
     Route::middleware(['role:administrador'])->group(function () {
+
 
         Route::get('/listas', [UserController::class, 'index'])->name('users.index');
 
@@ -96,7 +106,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/horarios', [ScheduleController::class, 'index'])->name('horarios.index');
     Route::get('/asistencias', [AttendanceController::class, 'index'])
-            ->name('attendances.index');
+        ->name('attendances.index');
 });
 
 

@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Folder, LayoutGrid,  PersonStandingIcon, BookOpen, ClipboardList, UsersRound, HandCoins, Settings, Coins,List } from 'lucide-react';
+import { Folder, LayoutGrid,  PersonStandingIcon, BookOpen, ClipboardList, UsersRound, HandCoins, Settings, Coins,List, BookCheck } from 'lucide-react';
 import AppLogo from './app-logo';
 import { usePage } from '@inertiajs/react';
 
@@ -14,13 +14,13 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
         role: ['administrador'],
-    },
+    },/*
     {
         title: 'Reportes',
         href: '/reportes',
         icon: Folder,
         role: ['administrador', 'estudiante', 'profesor', 'contable', 'tutor'],
-    },
+    },*/
     {
         title: 'Personas',
         href: '/personas',
@@ -72,8 +72,8 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Asistencias',
         href: '/asistencias',
-        icon: List,
-        role: ['administrador', 'profesor', 'estudiante'],
+        icon: BookCheck,
+        role: ['profesor', 'estudiante'],
     }
 ];
 

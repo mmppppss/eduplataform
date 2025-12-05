@@ -92,7 +92,7 @@ export default function Tutorias() {
             <Notify />
             <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                    <h1 className="text-2xl font-bold">Gestión de Tutorias</h1>
+                    <h1 className="text-2xl font-bold">Gestión de Tutorías</h1>
                     <Button onClick={() => setOpen(open ? false : true)} >Agregar Tutoria</Button>
                 </div>
 

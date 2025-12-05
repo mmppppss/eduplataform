@@ -239,17 +239,11 @@ export default function Dashboard() {
                     </CardHeader>
                     <CardContent>
                         <div className="flex flex-wrap gap-4">
-                            <Button asChild>
-                                <a href="/personas/create">Nueva Persona</a>
-                            </Button>
                             <Button variant="outline" asChild>
                                 <a href="/cursos">Gestionar Cursos</a>
                             </Button>
                             <Button variant="outline" asChild>
-                                <a href="/asistencias">Registrar Asistencia</a>
-                            </Button>
-                            <Button variant="outline" asChild>
-                                <a href="/pagos">Registrar Pago</a>
+                                <a href="/asistencias">Revisar Asistencia</a>
                             </Button>
                             <Button variant="outline" asChild>
                                 <a href="/tutorias">Gestionar Tutorías</a>
