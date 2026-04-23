@@ -11,11 +11,11 @@ class AttendanceController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Attendance::with(['enrollment.student.person', 'enrollment.tutorship']);
+        $query = Attendance::with(['enrollment.student.person', 'enrollment.course']);
 
-        if ($request->tutorship_id) {
-            $query->whereHas('enrollment.tutorship', function ($q) use ($request) {
-                $q->where('id', $request->tutorship_id);
+        if ($request->course_id) {
+            $query->whereHas('enrollment', function ($q) use ($request) {
+                $q->where('course_id', $request->course_id);
             });
         }
 
@@ -29,23 +29,23 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'tutorship_id' => 'required|exists:tutorships,id',
-            'date' => 'required|date',
             'student_id' => 'required|exists:persons,id',
+            'course_id' => 'required|exists:courses,id',
+            'date' => 'required|date',
             'present' => 'required|boolean',
         ]);
 
-        $enrollment = \App\Models\Enrollment::where('tutorship_id', $validated['tutorship_id'])
-            ->where('student_id', $validated['student_id'])
+        $enrollment = \App\Models\Enrollment::where('student_id', $validated['student_id'])
+            ->where('course_id', $validated['course_id'])
             ->first();
 
         if (!$enrollment) {
-            return response()->json(['error' => 'Estudiante no matriculado'], 404);
+            return response()->json(['error' => 'Estudiante no matriculado en este curso'], 404);
         }
 
         $attendance = Attendance::updateOrCreate(
             ['enrollment_id' => $enrollment->id, 'date' => $validated['date']],
-            ['state' => $validated['present'] ? 'presente' : 'ausente']
+            ['state' => $validated['present'] ? 'asistió' : 'falta']
         );
 
         return response()->json(['success' => true, 'attendance' => $attendance], 201);

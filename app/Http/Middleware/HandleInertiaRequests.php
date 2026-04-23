@@ -37,6 +37,10 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        if ($request->is('api/*')) {
+            return [];
+        }
+
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
         return [

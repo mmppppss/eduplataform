@@ -10,7 +10,7 @@ class ScheduleController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Schedule::with(['tutorship.course', 'tutorship.teacher.person']);
+        $query = Schedule::with(['course']);
 
         if ($request->day) {
             $query->where('day', $request->day);
@@ -22,7 +22,7 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'tutorship_id' => 'required|exists:tutorships,id',
+            'course_id' => 'required|exists:courses,id',
             'day' => 'required|string|in:lunes,martes,miércoles,jueves,viernes,sábado,domingo',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',

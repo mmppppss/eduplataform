@@ -1,0 +1,733 @@
+{
+	"info": {
+		"_postman_id": "edu-platform-api",
+		"name": "Edu Platform API",
+		"description": "Colección de pruebas para la API de la plataforma educativa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.token) {",
+									"    pm.collectionVariables.set('token', jsonData.token);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["login"]
+						},
+						"description": "Iniciar sesión y obtener token API"
+					},
+					"response": []
+				},
+				{
+					"name": "Me - Obtener usuario actual",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["me"]
+						},
+						"description": "Obtener información del usuario autenticado"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["logout"]
+						},
+						"description": "Cerrar sesión e invalidar token"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Personas",
+			"item": [
+				{
+					"name": "Listar personas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/personas",
+							"host": ["{{baseUrl}}"],
+							"path": ["personas"]
+						},
+						"description": "Obtener lista de todas las personas"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear persona",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Juan\",\n    \"last_name\": \"Pérez\",\n    \"ci\": \"12345678\",\n    \"phone\": \"70012345\",\n    \"address\": \"Calle Principal #123\",\n    \"birth_date\": \"2000-05-15\",\n    \"role\": \"estudiante\",\n    \"email\": \"juan.perez@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/personas",
+							"host": ["{{baseUrl}}"],
+							"path": ["personas"]
+						},
+						"description": "Crear nueva persona con usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar persona",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Juan Actualizado\",\n    \"last_name\": \"Pérez\",\n    \"ci\": \"12345678\",\n    \"phone\": \"70012345\",\n    \"address\": \"Calle Nueva #456\",\n    \"birth_date\": \"2000-05-15\",\n    \"role\": \"estudiante\",\n    \"email\": \"juan.perez@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/personas/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["personas", "1"]
+						},
+						"description": "Actualizar datos de una persona (reemplazar 1 con ID real)"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar persona",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/personas/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["personas", "1"]
+						},
+						"description": "Eliminar una persona (reemplazar 1 con ID real)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cursos",
+			"item": [
+				{
+					"name": "Listar cursos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cursos",
+							"host": ["{{baseUrl}}"],
+							"path": ["cursos"]
+						},
+						"description": "Obtener lista de todos los cursos"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear curso",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Matemáticas Avanzadas\",\n    \"description\": \"Curso de matemáticas para nivel universitario\",\n    \"price\": 150.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cursos",
+							"host": ["{{baseUrl}}"],
+							"path": ["cursos"]
+						},
+						"description": "Crear nuevo curso"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar curso",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Matemáticas Avanzadas - Actualizado\",\n    \"description\": \"Curso actualizado de matemáticas\",\n    \"price\": 175.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cursos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["cursos", "1"]
+						},
+						"description": "Actualizar un curso (reemplazar 1 con ID real)"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar curso",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cursos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["cursos", "1"]
+						},
+						"description": "Eliminar un curso (reemplazar 1 con ID real)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tutorías",
+			"item": [
+				{
+					"name": "Listar tutorías",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tutorias",
+							"host": ["{{baseUrl}}"],
+							"path": ["tutorias"]
+						},
+						"description": "Obtener lista de todas las tutorías"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear tutoría",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tutor_id\": 1,\n    \"student_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tutorias",
+							"host": ["{{baseUrl}}"],
+							"path": ["tutorias"]
+						},
+						"description": "Crear nueva tutoría"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar tutoría",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tutor_id\": 1,\n    \"student_id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tutorias/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["tutorias", "1"]
+						},
+						"description": "Actualizar una tutoría (reemplazar 1 con ID real)"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar tutoría",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tutorias/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["tutorias", "1"]
+						},
+						"description": "Eliminar una tutoría (reemplazar 1 con ID real)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Asistencias",
+			"item": [
+				{
+					"name": "Listar asistenciass",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/asistencias",
+							"host": ["{{baseUrl}}"],
+							"path": ["asistencias"],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "1",
+									"description": "Filtrar por curso (opcional)"
+								},
+								{
+									"key": "date",
+									"value": "2026-04-23",
+									"description": "Filtrar por fecha (opcional)"
+								}
+							]
+						},
+						"description": "Obtener lista de todas las assistencias"
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar asistencia",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": 1,\n    \"course_id\": 1,\n    \"date\": \"2026-04-23\",\n    \"present\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/asistencias",
+							"host": ["{{baseUrl}}"],
+							"path": ["asistencias"]
+						},
+						"description": "Registrar asistencia de un estudiante"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pagos",
+			"item": [
+				{
+					"name": "Listar pagos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pagos",
+							"host": ["{{baseUrl}}"],
+							"path": ["pagos"]
+						},
+						"description": "Obtener lista de pagos (opcional: ?state=pendiente)"
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar pago",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"enrollment_id\": 1,\n    \"amount\": 150.00,\n    \"date\": \"2026-04-23\",\n    \"type\": \"inscripcion\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pagos",
+							"host": ["{{baseUrl}}"],
+							"path": ["pagos"]
+						},
+						"description": "Registrar nuevo pago"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar pago",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\": \"aprobado\",\n    \"amount\": 150.00,\n    \"date\": \"2026-04-23\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pagos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["pagos", "1"]
+						},
+						"description": "Actualizar estado de un pago (reemplazar 1 con ID real)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Horarios",
+			"item": [
+				{
+					"name": "Listar horarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/horarios",
+							"host": ["{{baseUrl}}"],
+							"path": ["horarios"]
+						},
+						"description": "Obtener lista de horarios (opcional: ?day=lunes)"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear horario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": 1,\n    \"day\": \"lunes\",\n    \"start_time\": \"08:00\",\n    \"end_time\": \"10:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/horarios",
+							"host": ["{{baseUrl}}"],
+							"path": ["horarios"]
+						},
+						"description": "Crear nuevo horario"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar horario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/horarios/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["horarios", "1"]
+						},
+						"description": "Eliminar un horario (reemplazar 1 con ID real)"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

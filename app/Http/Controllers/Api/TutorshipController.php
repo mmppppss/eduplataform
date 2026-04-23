@@ -10,14 +10,14 @@ class TutorshipController extends Controller
 {
     public function index()
     {
-        return response()->json(Tutorship::with(['course', 'teacher.person'])->get());
+        return response()->json(Tutorship::with(['tutor.person', 'student'])->get());
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'teacher_id' => 'required|exists:persons,id',
+            'tutor_id' => 'required|exists:persons,id',
+            'student_id' => 'required|exists:persons,id',
         ]);
 
         $tutorship = Tutorship::create($validated);
@@ -28,8 +28,8 @@ class TutorshipController extends Controller
     public function update(Request $request, Tutorship $tutorship)
     {
         $validated = $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'teacher_id' => 'required|exists:persons,id',
+            'tutor_id' => 'required|exists:persons,id',
+            'student_id' => 'required|exists:persons,id',
         ]);
 
         $tutorship->update($validated);

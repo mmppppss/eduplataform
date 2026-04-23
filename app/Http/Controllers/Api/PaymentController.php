@@ -10,10 +10,10 @@ class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Payment::with(['enrollment.student.person', 'enrollment.tutorship.course']);
+        $query = Payment::with(['enrollment.student.person', 'enrollment.course']);
 
-        if ($request->status) {
-            $query->where('status', $request->status);
+        if ($request->state) {
+            $query->where('state', $request->state);
         }
 
         return response()->json($query->get());
@@ -24,8 +24,8 @@ class PaymentController extends Controller
         $validated = $request->validate([
             'enrollment_id' => 'required|exists:enrollments,id',
             'amount' => 'required|numeric',
-            'payment_date' => 'required|date',
-            'reference' => 'nullable|string',
+            'date' => 'required|date',
+            'type' => 'nullable|string',
         ]);
 
         $payment = Payment::create($validated);
@@ -36,9 +36,9 @@ class PaymentController extends Controller
     public function update(Request $request, Payment $payment)
     {
         $validated = $request->validate([
-            'status' => 'required|string|in:pendiente,aprobado,rechazado',
+            'state' => 'required|string|in:pendiente,aprobado,rechazado',
             'amount' => 'numeric',
-            'payment_date' => 'date',
+            'date' => 'date',
         ]);
 
         $payment->update($validated);
