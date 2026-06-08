@@ -18,7 +18,7 @@ class ConfigSeeder extends Seeder
         ];
 
         foreach ($configs as $config) {
-            Config::create($config);
+            Config::firstOrCreate(['key' => $config['key']], $config);
         }
     }
 }

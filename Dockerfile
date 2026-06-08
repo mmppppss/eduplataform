@@ -1,0 +1,42 @@
+# Use a base image with PHP, Nginx, and Alpine Linux.
+# Use fixed version tags for stability.
+FROM serversideup/php:8.4.11-fpm-nginx-alpine3.21-v3.6.0 AS development
+
+# Switch to root to install dependencies
+USER root
+
+# Install any needed PHP extensions
+RUN install-php-extensions pdo_mysql mysqli
+
+# Defaults
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+
+RUN docker-php-serversideup-set-id www-data $USER_ID:$GROUP_ID \
+    && docker-php-serversideup-set-file-permissions --owner $USER_ID:$GROUP_ID --service nginx
+
+
+# Install Node (for building assets)
+# This is quick and dirty, we'll fix it in the multi-stage version
+RUN apk add --no-cache nodejs npm
+USER www-data
+
+# Copy composer files first
+COPY --chown=www-data:www-data composer.json composer.lock /var/www/html/
+RUN composer install --optimize-autoloader --no-interaction
+
+# Copy package files for frontend
+COPY --chown=www-data:www-data package.json package-lock.json /var/www/html/
+RUN npm ci
+
+# Copy rest of the app
+COPY --chown=www-data:www-data . /var/www/html/
+
+# Build frontend assets
+USER root
+RUN npm run build
+USER root
+
+# Run the application
+EXPOSE 8080
+CMD ["./docker-entrypoint.sh"]

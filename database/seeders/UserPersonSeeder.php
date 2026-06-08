@@ -11,7 +11,11 @@ class UserPersonSeeder extends Seeder
 {
     public function run()
     {
-        // Crear la persona
+        if (User::where('email', 'admin@email.com')->exists()) {
+            $this->command->info('Usuario admin ya existe, saltando seeder.');
+            return;
+        }
+
         $person = Person::create([
             'name' => 'Admin',
             'last_name' => 'Admin',
@@ -22,15 +26,14 @@ class UserPersonSeeder extends Seeder
             'role' => 'administrador',
         ]);
 
-        // Crear el usuario asociado
         User::create([
-            'email' => 'me@mpps.qzz.io',
+            'email' => 'admin@email.com',
             'password' => Hash::make('admin'),
             'person_id' => $person->id,
         ]);
 
         $this->command->info('Usuario admin creado exitosamente!');
-        $this->command->info('Email: me@mpps.qzz.io');
+        $this->command->info('Email: admin@email.com');
         $this->command->info('Contraseña: admin');
     }
 }
